@@ -21,4 +21,4 @@ def line():
     print(f"	P1 ({x1}, {y1})")
     print(f"	P2 ({x2}, {y2})")
     print("")
-    print(f"La distancia entre ellos es:{distancia}")
+    print(f"La distancia entre ellos es: {distancia}")
