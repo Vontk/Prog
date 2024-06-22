@@ -16,3 +16,5 @@ notas = {
 for k in notas:
     notas[k] = notas[k] + 1
     print(notas[k])
+for k in notas.keys():
+    print(f'{k} el gordo')
