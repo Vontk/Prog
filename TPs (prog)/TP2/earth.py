@@ -1,3 +1,5 @@
+# Learning basic string comparison and booleans
+
 def earth():
     x = "Bangladesh"
     y = "Barbados"
