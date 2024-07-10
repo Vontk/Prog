@@ -22,11 +22,21 @@ def evaluate_argument():
         text_result.delete(1.0, tk.END)
         text_result.insert(tk.END, result)
     # if this results in an error, then the code will run the except
-    except:
+    except SyntaxError:
         clear_argument()
-        text_result.insert(1.0, 'Error de calculo')
-
-
+        text_result.insert(1.0, 'Syntax Error')
+    except ZeroDivisionError:
+        clear_argument()
+        text_result.insert(1.0, 'Zero Division Error')
+    except ValueError:
+        clear_argument()
+        text_result.insert(1.0, 'Overflow error; too many characters')
+    except OverflowError:
+        clear_argument()
+        text_result.insert(1.0, 'Overflow error; too many characters')
+    except TypeError:
+        clear_argument()
+        text_result.insert(1.0, 'Syntax Error')
 def clear_argument():
     global argument
     argument = ''
