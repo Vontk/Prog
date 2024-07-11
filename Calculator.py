@@ -1,8 +1,28 @@
+import random
 import tkinter as tk
+import math
+def generate_random_hex_color():
+    # generates a random hexadecimal color code
+    hex_digits = "0123456789ABCDEF"
+    color = "#"
+    for _ in range(6):
+        color += random.choice(hex_digits)
+    return color
+
+def randomize_color():
+    """Randomizes the background color of the root window."""
+    global root
+    new_color = generate_random_hex_color()
+    for button in root.winfo_children():  # Iterate through child widgets
+        if isinstance(button, tk.Button):  # Check if it's a button
+            button.config(bg=generate_random_hex_color())  # Set background color of the button
+    root.config(bg=generate_random_hex_color())
+    text_result.config(bg=generate_random_hex_color())
+
+
+
 
 argument = ''
-
-
 def input_argument(button_input):
     global argument
     argument += str(button_input)
@@ -37,6 +57,8 @@ def evaluate_argument():
     except TypeError:
         clear_argument()
         text_result.insert(1.0, 'Syntax Error')
+
+
 def clear_argument():
     global argument
     argument = ''
@@ -45,15 +67,15 @@ def clear_argument():
 
 # tk.Tk() constructs a main app window on default settings, it's an objet made using a class, we store it on 'root'
 root = tk.Tk()
-root.title('Calculator')
-root.geometry('300x275')
+root.title('Mega Calculadora Scientific Premium 5000')
+root.geometry('832x535')
 # tk.Text() creates a text widget class, used to input and display text on the gui
 # this doesn't create the text box, because we didn't specify position, but text_result.pack() will create it,
 # try argument fill, expand or side, like this: <text_result.pack(fill=tk.BOTH, expand=True)>
-text_result = tk.Text(root, height=2, width=16, font=('Arial', 24))
+text_result = tk.Text(root, height=5, width=46, font=('Arial', 24))
 # tk geometry method, it's used to place widgets within a grid-based layout system
 # the parameter dictates how many columns the widget spans.
-text_result.grid(columnspan=5)
+text_result.grid(columnspan=1000)
 # individual buttons, the argument for the method takes (window, text = '', command = function), the command attribute
 # expects a function (not the return of a function), lambda turns an otherwise evaluated function into a regular
 # function object, waiting to be evaluated (so, actually a function)
@@ -98,5 +120,13 @@ button_equals_to = tk.Button(root, text='=', command=evaluate_argument, width=11
 button_equals_to.grid(row=6, column=1, columnspan=2)
 button_clear = tk.Button(root, text='C', command=clear_argument, width=11, font=('Arial', 14))
 button_clear.grid(row=6, column=3, columnspan=2)
+button_random = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
+button_random.grid(row=7, column=3, columnspan=2)
+button_random1 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
+button_random1.grid(row=8, column=3, columnspan=2)
+button_random2 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
+button_random2.grid(row=9, column=3, columnspan=2)
+button_random3 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
+button_random3.grid(row=10, column=3, columnspan=2)
 # method that runs the window until it's closed
 root.mainloop()
