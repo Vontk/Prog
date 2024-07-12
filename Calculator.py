@@ -66,7 +66,7 @@ def randomize_color():
         if isinstance(button, tk.Button):
             button.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
     root.config(bg=generate_random_hex_color())
-    text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
+    text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color(), insertbackground=generate_random_hex_color())
 def randomize_color_uniform():
     global root
     new_color = generate_random_hex_color()
@@ -75,7 +75,7 @@ def randomize_color_uniform():
         if isinstance(button, tk.Button):
             button.config(bg=new_color, fg=new_color2)
     root.config(bg=new_color)
-    text_result.config(bg=new_color, fg=new_color2)
+    text_result.config(bg=new_color, fg=new_color2, insertbackground= new_color2)
 def regular_color():
     global root
     global button_colour
@@ -83,11 +83,12 @@ def regular_color():
     global text_bg_colour
     global button_text_colour
     global text_colour
+    global text_cursor_color
     for button in root.winfo_children():
         if isinstance(button, tk.Button):
             button.config(bg=button_colour, fg=button_text_colour)
     root.config(bg=bg_colour)
-    text_result.config(bg=text_bg_colour, fg=text_colour)
+    text_result.config(bg=text_bg_colour, fg=text_colour, insertbackground=text_cursor_color)
 
 
 argument = ''
@@ -102,6 +103,7 @@ root.geometry('814x535')
 bg_colour = "#2c2d32"
 text_bg_colour = "#263437"
 text_colour = "#7ecccc"
+text_cursor_color = "#67a8a8"
 button_colour = "#1b4b4b"
 button_text_colour = "#3da8a8"
 
@@ -162,5 +164,6 @@ button_right = tk.Button(root, text='->', command=move_cursor_right, width=5, fo
 button_right.grid(row=2, column=7)
 
 regular_color()
+text_result.focus_set()
 
 root.mainloop()
