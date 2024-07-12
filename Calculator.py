@@ -1,47 +1,44 @@
 import random
 import tkinter as tk
-import math
-def generate_random_hex_color():
-    # generates a random hexadecimal color code
-    hex_digits = "0123456789ABCDEF"
-    color = "#"
-    for _ in range(6):
-        color += random.choice(hex_digits)
-    return color
-
-def randomize_color():
-    """Randomizes the background color of the root window."""
-    global root
-    new_color = generate_random_hex_color()
-    for button in root.winfo_children():  # Iterate through child widgets
-        if isinstance(button, tk.Button):  # Check if it's a button
-            button.config(bg=generate_random_hex_color())  # Set background color of the button
-    root.config(bg=generate_random_hex_color())
-    text_result.config(bg=generate_random_hex_color())
-
-
-
-
-argument = ''
-def input_argument(button_input):
-    global argument
-    argument += str(button_input)
-    # this method deletes the text field of the tkinter text widget, the method takes the input (index, index)
-    # and for reference 1.0 represents first position while tk.END represents the end, can be replaced with 'end'
+def update_text_widget():
     text_result.delete(1.0, tk.END)
-    # then the method insert, replaces the text widget with the new argument
     text_result.insert(tk.END, argument)
-
-
+    text_result.mark_set("insert", f"1.{cursor_position}")
+def input_argument(button_input):
+    global argument, cursor_position
+    argument = argument[:cursor_position] + str(button_input) + argument[cursor_position:]
+    cursor_position += 1
+    update_text_widget()
+def del_argument():
+    global argument, cursor_position
+    # checks if cursor is at the start
+    # if not, it deletes the character to the left of the cursor, and adjusts cursor position accordingly
+    if cursor_position > 0:
+        argument = argument[:cursor_position-1] + argument[cursor_position:]
+        cursor_position -= 1
+        update_text_widget()
+def move_cursor_left():
+    global cursor_position
+    if cursor_position > 0:
+        cursor_position -= 1
+        update_text_widget()
+def move_cursor_right():
+    global cursor_position
+    if cursor_position < len(argument):
+        cursor_position += 1
+        update_text_widget()
+def clear_argument():
+    global argument, cursor_position
+    argument = ''
+    cursor_position = 0
+    update_text_widget()
 def evaluate_argument():
-    global argument
+    global argument, cursor_position
     try:
         result = str(eval(argument))
-        # if we want the argument to be the calculated number, then <arg = res> if you want it to be cleared <arg = ''>
         argument = result
-        text_result.delete(1.0, tk.END)
-        text_result.insert(tk.END, result)
-    # if this results in an error, then the code will run the except
+        cursor_position = len(argument)
+        update_text_widget()
     except SyntaxError:
         clear_argument()
         text_result.insert(1.0, 'Syntax Error')
@@ -57,33 +54,64 @@ def evaluate_argument():
     except TypeError:
         clear_argument()
         text_result.insert(1.0, 'Syntax Error')
+def generate_random_hex_color():
+    hex_digits = "0123456789ABCDEF"
+    color = "#"
+    for _ in range(6):
+        color += random.choice(hex_digits)
+    return color
+def randomize_color():
+    global root
+    for button in root.winfo_children():
+        if isinstance(button, tk.Button):
+            button.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
+    root.config(bg=generate_random_hex_color())
+    text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
+def randomize_color_uniform():
+    global root
+    new_color = generate_random_hex_color()
+    new_color2 = generate_random_hex_color()
+    for button in root.winfo_children():
+        if isinstance(button, tk.Button):
+            button.config(bg=new_color, fg=new_color2)
+    root.config(bg=new_color)
+    text_result.config(bg=new_color, fg=new_color2)
+def regular_color():
+    global root
+    global button_colour
+    global bg_colour
+    global text_bg_colour
+    global button_text_colour
+    global text_colour
+    for button in root.winfo_children():
+        if isinstance(button, tk.Button):
+            button.config(bg=button_colour, fg=button_text_colour)
+    root.config(bg=bg_colour)
+    text_result.config(bg=text_bg_colour, fg=text_colour)
 
 
-def clear_argument():
-    global argument
-    argument = ''
-    text_result.delete(1.0, tk.END)
+argument = ''
+cursor_position = 0
 
-
-# tk.Tk() constructs a main app window on default settings, it's an objet made using a class, we store it on 'root'
+# creates main window or 'root'
 root = tk.Tk()
-root.title('Mega Calculadora Scientific Premium 5000')
-root.geometry('832x535')
-# tk.Text() creates a text widget class, used to input and display text on the gui
-# this doesn't create the text box, because we didn't specify position, but text_result.pack() will create it,
-# try argument fill, expand or side, like this: <text_result.pack(fill=tk.BOTH, expand=True)>
-text_result = tk.Text(root, height=5, width=46, font=('Arial', 24))
-# tk geometry method, it's used to place widgets within a grid-based layout system
-# the parameter dictates how many columns the widget spans.
+root.title('Calculadora Cientifica')
+root.geometry('814x535')
+
+# default colors
+bg_colour = "#2c2d32"
+text_bg_colour = "#263437"
+text_colour = "#7ecccc"
+button_colour = "#1b4b4b"
+button_text_colour = "#3da8a8"
+
+# creates text widget
+text_result = tk.Text(root, height=2, width=30, font=('Arial', 36), fg="white")
 text_result.grid(columnspan=1000)
-# individual buttons, the argument for the method takes (window, text = '', command = function), the command attribute
-# expects a function (not the return of a function), lambda turns an otherwise evaluated function into a regular
-# function object, waiting to be evaluated (so, actually a function)
-# (which can be used on the command attribute and would work as you would expect just calling the function to work)
+
+# creates all individual button widgets
 button_1 = tk.Button(root, text='1', command=lambda: input_argument('1'), width=5, font=('Arial', 14))
-# this sets the button to be on the previously created grid
 button_1.grid(row=2, column=1)
-# now repeat the same for other numbers and operators
 button_2 = tk.Button(root, text='2', command=lambda: input_argument('2'), width=5, font=('Arial', 14))
 button_2.grid(row=2, column=2)
 button_3 = tk.Button(root, text='3', command=lambda: input_argument('3'), width=5, font=('Arial', 14))
@@ -102,9 +130,11 @@ button_9 = tk.Button(root, text='9', command=lambda: input_argument('9'), width=
 button_9.grid(row=4, column=3)
 button_0 = tk.Button(root, text='0', command=lambda: input_argument('0'), width=5, font=('Arial', 14))
 button_0.grid(row=5, column=2)
-# now for all operators and other functions
+
 button_addition = tk.Button(root, text='+', command=lambda: input_argument('+'), width=5, font=('Arial', 14))
 button_addition.grid(row=2, column=4)
+button_delete = tk.Button(root, text='Del.', command=del_argument, width=5, font=('Arial', 14))
+button_delete.grid(row=2, column=5)
 button_subtraction = tk.Button(root, text='-', command=lambda: input_argument('-'), width=5, font=('Arial', 14))
 button_subtraction.grid(row=3, column=4)
 button_multiplication = tk.Button(root, text='x', command=lambda: input_argument('*'), width=5, font=('Arial', 14))
@@ -115,18 +145,22 @@ button_open = tk.Button(root, text='(', command=lambda: input_argument('('), wid
 button_open.grid(row=5, column=1)
 button_close = tk.Button(root, text=')', command=lambda: input_argument(')'), width=5, font=('Arial', 14))
 button_close.grid(row=5, column=3)
-# here we can understand when lambda is not necessary
 button_equals_to = tk.Button(root, text='=', command=evaluate_argument, width=11, font=('Arial', 14))
 button_equals_to.grid(row=6, column=1, columnspan=2)
 button_clear = tk.Button(root, text='C', command=clear_argument, width=11, font=('Arial', 14))
 button_clear.grid(row=6, column=3, columnspan=2)
-button_random = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
-button_random.grid(row=7, column=3, columnspan=2)
-button_random1 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
-button_random1.grid(row=8, column=3, columnspan=2)
-button_random2 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
-button_random2.grid(row=9, column=3, columnspan=2)
-button_random3 = tk.Button(root, text='Rand.', command=randomize_color, width=11, font=('Arial', 14))
-button_random3.grid(row=10, column=3, columnspan=2)
-# method that runs the window until it's closed
+button_random_S = tk.Button(root, text='Rand. Sort.', command=randomize_color, width=11, font=('Arial', 14))
+button_random_S.grid(row=10, column=1, columnspan=2)
+button_random_U = tk.Button(root, text='Rand. Unif.', command=randomize_color_uniform, width=11, font=('Arial', 14))
+button_random_U.grid(row=10, column=3, columnspan=2)
+button_regular = tk.Button(root, text='Regular Clr.', command=regular_color, width=11, font=('Arial', 14))
+button_regular.grid(row=3, column=5, columnspan=2)
+
+button_left = tk.Button(root, text='<-', command=move_cursor_left, width=5, font=('Arial', 14))
+button_left.grid(row=2, column=6)
+button_right = tk.Button(root, text='->', command=move_cursor_right, width=5, font=('Arial', 14))
+button_right.grid(row=2, column=7)
+
+regular_color()
+
 root.mainloop()
