@@ -1,5 +1,7 @@
 import random
 import tkinter as tk
+import math as m
+import time
 def update_text_widget():
     text_result.delete(1.0, tk.END)
     text_result.insert(tk.END, argument)
@@ -7,7 +9,7 @@ def update_text_widget():
 def input_argument(button_input):
     global argument, cursor_position
     argument = argument[:cursor_position] + str(button_input) + argument[cursor_position:]
-    cursor_position += 1
+    cursor_position += len(button_input)
     update_text_widget()
 def del_argument():
     global argument, cursor_position
@@ -67,6 +69,13 @@ def randomize_color():
             button.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
     root.config(bg=generate_random_hex_color())
     text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color(), insertbackground=generate_random_hex_color())
+# broken, causes calculator to stop responding
+def toggle_random():
+    global random_is_on
+    while random_is_on:
+        randomize_color()
+        time.sleep(0.15)
+    random_is_on = not random_is_on
 def randomize_color_uniform():
     global root
     new_color = generate_random_hex_color()
@@ -75,7 +84,7 @@ def randomize_color_uniform():
         if isinstance(button, tk.Button):
             button.config(bg=new_color, fg=new_color2)
     root.config(bg=new_color)
-    text_result.config(bg=new_color, fg=new_color2, insertbackground= new_color2)
+    text_result.config(bg=new_color, fg=new_color2, insertbackground=new_color2)
 def regular_color():
     global root
     global button_colour
@@ -89,8 +98,11 @@ def regular_color():
             button.config(bg=button_colour, fg=button_text_colour)
     root.config(bg=bg_colour)
     text_result.config(bg=text_bg_colour, fg=text_colour, insertbackground=text_cursor_color)
+def empty():
+    pass
 
 
+random_is_on = False
 argument = ''
 cursor_position = 0
 
@@ -143,6 +155,8 @@ button_multiplication = tk.Button(root, text='x', command=lambda: input_argument
 button_multiplication.grid(row=4, column=4)
 button_division = tk.Button(root, text='/', command=lambda: input_argument('/'), width=5, font=('Arial', 14))
 button_division.grid(row=5, column=4)
+button_dot = tk.Button(root, text='.', command=lambda: input_argument('.'), width=5, font=('Arial', 14))
+button_dot.grid(row=5, column=5)
 button_open = tk.Button(root, text='(', command=lambda: input_argument('('), width=5, font=('Arial', 14))
 button_open.grid(row=5, column=1)
 button_close = tk.Button(root, text=')', command=lambda: input_argument(')'), width=5, font=('Arial', 14))
@@ -157,6 +171,15 @@ button_random_U = tk.Button(root, text='Rand. Unif.', command=randomize_color_un
 button_random_U.grid(row=10, column=3, columnspan=2)
 button_regular = tk.Button(root, text='Regular Clr.', command=regular_color, width=11, font=('Arial', 14))
 button_regular.grid(row=3, column=5, columnspan=2)
+button_log = tk.Button(root, text='log(x)', command=lambda: input_argument('(m.log(x, base))'), width=5, font=('Arial', 14))
+button_log.grid(row=3, column=7)
+button_e = tk.Button(root, text='e', command=lambda: input_argument('(m.e)'), width=5, font=('Arial', 14))
+button_e.grid(row=4, column=5)
+button_pi = tk.Button(root, text='π', command=lambda: input_argument('(m.pi)'), width=5, font=('Arial', 14))
+button_pi.grid(row=4, column=6)
+
+button_empty_4 = tk.Button(root, text='^', command=lambda: input_argument('**'), width=5, font=('Arial', 14))
+button_empty_4.grid(row=4, column=7)
 
 button_left = tk.Button(root, text='<-', command=move_cursor_left, width=5, font=('Arial', 14))
 button_left.grid(row=2, column=6)
