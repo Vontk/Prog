@@ -2,6 +2,8 @@ import random
 import tkinter as tk
 import math as m
 import time
+def log(a, b=10):
+    return m.log(a, b)
 def update_text_widget():
     text_result.delete(1.0, tk.END)
     text_result.insert(tk.END, argument)
@@ -171,7 +173,7 @@ button_random_U = tk.Button(root, text='Rand. Unif.', command=randomize_color_un
 button_random_U.grid(row=10, column=3, columnspan=2)
 button_regular = tk.Button(root, text='Regular Clr.', command=regular_color, width=11, font=('Arial', 14))
 button_regular.grid(row=3, column=5, columnspan=2)
-button_log = tk.Button(root, text='log(x)', command=lambda: input_argument('(m.log(x, base))'), width=5, font=('Arial', 14))
+button_log = tk.Button(root, text='log(x)', command=lambda: input_argument('log(x, base)'), width=5, font=('Arial', 14))
 button_log.grid(row=3, column=7)
 button_e = tk.Button(root, text='e', command=lambda: input_argument('(m.e)'), width=5, font=('Arial', 14))
 button_e.grid(row=4, column=5)
