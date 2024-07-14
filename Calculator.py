@@ -70,7 +70,8 @@ def randomize_color():
         if isinstance(button, tk.Button):
             button.config(bg=generate_random_hex_color(), fg=generate_random_hex_color())
     root.config(bg=generate_random_hex_color())
-    text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color(), insertbackground=generate_random_hex_color())
+    text_result.config(bg=generate_random_hex_color(), fg=generate_random_hex_color(),
+                       insertbackground=generate_random_hex_color())
 # broken, causes calculator to stop responding
 def toggle_random():
     global random_is_on
@@ -89,12 +90,12 @@ def randomize_color_uniform():
     text_result.config(bg=new_color, fg=new_color2, insertbackground=new_color2)
 def regular_color():
     global root
-    global button_colour
     global bg_colour
     global text_bg_colour
-    global button_text_colour
     global text_colour
     global text_cursor_color
+    global button_colour
+    global button_text_colour
     for button in root.winfo_children():
         if isinstance(button, tk.Button):
             button.config(bg=button_colour, fg=button_text_colour)
@@ -146,7 +147,6 @@ button_9 = tk.Button(root, text='9', command=lambda: input_argument('9'), width=
 button_9.grid(row=4, column=3)
 button_0 = tk.Button(root, text='0', command=lambda: input_argument('0'), width=5, font=('Arial', 14))
 button_0.grid(row=5, column=2)
-
 button_addition = tk.Button(root, text='+', command=lambda: input_argument('+'), width=5, font=('Arial', 14))
 button_addition.grid(row=2, column=4)
 button_delete = tk.Button(root, text='Del.', command=del_argument, width=5, font=('Arial', 14))
@@ -179,10 +179,8 @@ button_e = tk.Button(root, text='e', command=lambda: input_argument('(m.e)'), wi
 button_e.grid(row=4, column=5)
 button_pi = tk.Button(root, text='π', command=lambda: input_argument('(m.pi)'), width=5, font=('Arial', 14))
 button_pi.grid(row=4, column=6)
-
-button_empty_4 = tk.Button(root, text='^', command=lambda: input_argument('**'), width=5, font=('Arial', 14))
-button_empty_4.grid(row=4, column=7)
-
+button_exp = tk.Button(root, text='^', command=lambda: input_argument('**'), width=5, font=('Arial', 14))
+button_exp.grid(row=4, column=7)
 button_left = tk.Button(root, text='<-', command=move_cursor_left, width=5, font=('Arial', 14))
 button_left.grid(row=2, column=6)
 button_right = tk.Button(root, text='->', command=move_cursor_right, width=5, font=('Arial', 14))
@@ -190,5 +188,4 @@ button_right.grid(row=2, column=7)
 
 regular_color()
 text_result.focus_set()
-
 root.mainloop()
