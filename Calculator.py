@@ -2,8 +2,6 @@ import random
 import tkinter as tk
 import math as m
 import time
-def log(a, b=10):
-    return m.log(a, b)
 def update_text_widget():
     text_result.delete(1.0, tk.END)
     text_result.insert(tk.END, argument)
@@ -101,6 +99,8 @@ def regular_color():
             button.config(bg=button_colour, fg=button_text_colour)
     root.config(bg=bg_colour)
     text_result.config(bg=text_bg_colour, fg=text_colour, insertbackground=text_cursor_color)
+def log(argument, base=10):
+    return m.log(argument, base)
 def empty():
     pass
 
