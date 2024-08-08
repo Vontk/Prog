@@ -40,14 +40,14 @@ def load(list_of_data):
     print(f'Cantidad de guanina: {list_of_data[3]}')
     print(f'Cantidad de uracil: {list_of_data[4]}')
     global ARN
-    ARN = list_of_data[0]
     global ADENINE
-    ADENINE = list_of_data[1]
     global CYTOSINE
-    CYTOSINE = list_of_data[2]
     global GUANINE
-    GUANINE = list_of_data[3]
     global URACIL
+    ARN = list_of_data[0]
+    ADENINE = list_of_data[1]
+    CYTOSINE = list_of_data[2]
+    GUANINE = list_of_data[3]
     URACIL = list_of_data[4]
 
 adn = 'ACTGACTGGTCATGTCATCTTGCAG'
